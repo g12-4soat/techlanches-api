@@ -78,7 +78,7 @@ jobs:
       publish-worker-image-dh
     ]
   
-    if: github.ref == 'refs/heads/release'
+    if: github.ref == 'refs/heads/release' || github.ref == 'refs/heads/main'
     environment:
       name: prod
     
