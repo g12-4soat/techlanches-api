@@ -30,7 +30,7 @@ jobs:
 
 ##############################################################
 
-  publish-image-dh:
+  publish-api-image-dh:
     needs: build-and-test
 
     runs-on: ubuntu-latest
@@ -48,22 +48,35 @@ jobs:
           TAG=$(date +%Y%m%d%H%M%S)
           docker build -f Dockerfile.API -t ${{secrets.DOCKER_USERNAME}}/techlanches-app:latest -t ${{secrets.DOCKER_USERNAME}}/techlanches-app:$TAG . --no-cache
           docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app:$TAG
-          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app:latest
-      
+          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app:latest      
+
+  publish-worker-image-dh:
+    needs: build-and-test
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: docker login
+        env:
+          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD 
       - name: Build and Push Worker Image
         working-directory: src/TechLanches
         run: |
-          cd src/TechLanches
           TAG=$(date +%Y%m%d%H%M%S)
           docker build -f Dockerfile.Worker -t ${{secrets.DOCKER_USERNAME}}/techlanches-app-worker:latest -t ${{secrets.DOCKER_USERNAME}}/techlanches-app-worker:$TAG . --no-cache
           docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app-worker:$TAG
           docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app-worker:latest
-
 ##############################################################
 
   deploy-prod:   
   
-    needs: publish-image-dh
+    needs: [
+      publish-api-image-dh,
+      publish-worker-image-dh
+    ]
   
     if: github.ref == 'refs/heads/release'
     environment:
