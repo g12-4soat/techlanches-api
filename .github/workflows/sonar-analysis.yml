@@ -38,7 +38,7 @@ jobs:
         id: cache-sonar-scanner
         uses: actions/cache@v3
         with:
-          path: .\.sonar\scanner
+          path: ./.sonar/scanner
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
           
@@ -56,7 +56,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GTH_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: | 
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"g12-4soat_techlanches-app" /o:"g12-4soat" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=test/**/coverage.opencover.xml
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"g12-4soat_techlanches-app" /o:"g12-4soat" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=test/**/coverage.opencover.xml
           dotnet build src/TechLanches/TechLanches.sln --configuration Release
           dotnet test test/**/*.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
