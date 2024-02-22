@@ -6,8 +6,33 @@ on:
   
 jobs:
 
-##############################################################
+
+#################################################################
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+  
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.x
+
+      - name: Restore NuGet packages
+        run: dotnet restore **/**/*.csproj
+
+      - name: Build
+        run: dotnet build **/**/*.csproj --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test test/**/*.csproj --no-restore --verbosity normal
+
+
+#####################################################################
   build-sonar:
+    needs: build-and-test
     name: Build and analyze
     runs-on: ubuntu-latest
     steps:
@@ -70,32 +95,10 @@ jobs:
             exit 1
           fi
 
-#################################################################
-  build-and-test:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-  
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.x
-
-      - name: Restore NuGet packages
-        run: dotnet restore **/**/*.csproj
-
-      - name: Build
-        run: dotnet build **/**/*.csproj --configuration Release --no-restore
-
-      - name: Test
-        run: dotnet test test/**/*.csproj --no-restore --verbosity normal
-
 ##############################################################
 
   publish-api-image-dh:
-    needs: build-and-test
+    needs: build-sonar
 
     runs-on: ubuntu-latest
     steps:
@@ -115,7 +118,7 @@ jobs:
           docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app:latest      
 
   publish-worker-image-dh:
-    needs: build-and-test
+    needs: build-sonar
 
     runs-on: ubuntu-latest
     steps:
@@ -133,7 +136,7 @@ jobs:
           docker build -f Dockerfile.Worker -t ${{secrets.DOCKER_USERNAME}}/techlanches-app-worker:latest -t ${{secrets.DOCKER_USERNAME}}/techlanches-app-worker:$TAG . --no-cache
           docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app-worker:$TAG
           docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app-worker:latest
-##############################################################
+#############################################################################################
 
   deploy-prod:   
   
