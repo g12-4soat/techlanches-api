@@ -33,7 +33,6 @@ jobs:
 #####################################################################
   build-sonar:
     needs: build-and-test
-    name: Build and analyze
     runs-on: ubuntu-latest
     steps:
     
