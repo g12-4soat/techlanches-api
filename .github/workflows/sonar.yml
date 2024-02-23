@@ -62,8 +62,12 @@ jobs:
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
             # Optionally you can use the output from the Quality Gate in another step.
 
-      - name: Extract SonarCloud task ID from console output
-        id: sonarcloud-task-id
-        run: |
-          echo "${{ steps.build-and-analyze.outputs.console-output }}"
-          echo "${{ steps.sonarcloud-task-id.outputs.task-id }}"
+      - uses: actions/checkout@v4
+        with:
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GTH_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
