@@ -62,6 +62,7 @@ jobs:
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
             # Optionally you can use the output from the Quality Gate in another step.
             
-      # The possible outputs of the `quality-gate-status` variable are `PASSED`, `WARN` or `FAILED`.
-      - name: "Example show SonarQube Quality Gate Status value"
-        run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
+      - name: Check Quality Gate status
+        run: |
+          STATUS=$(curl -s "https://sonarcloud.io/api/qualitygates/project_status?projectKey=g12-4soat_techlanches-app" | jq -r '.projectStatus.status')
+            echo "$STATUS"
