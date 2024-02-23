@@ -62,11 +62,11 @@ jobs:
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
             # Optionally you can use the output from the Quality Gate in another step.
 
-      - name: Get SonarCloud task ID
+      - name: Extract SonarCloud task ID from console output
         id: sonarcloud-task-id
         run: |
-          # Extrair o taskId do log de saída da análise do SonarCloud
-          TASK_ID=$(grep -oP 'https://sonarcloud.io/api/ce/task\?id=\K[^&]+' sonar-scanner-output.log)
+          # Extrair o taskId do console de saída
+          TASK_ID=$(echo "${{ steps.build-and-analyze.outputs.console-output }}" | grep -oP 'https://sonarcloud.io/api/ce/task\?id=\K[^&]+')
           # Definir a saída para uso posterior na pipeline
           echo "::set-output name=task-id::$TASK_ID"
       
