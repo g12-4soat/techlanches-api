@@ -61,4 +61,29 @@ jobs:
           dotnet test test/**/*.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
             # Optionally you can use the output from the Quality Gate in another step.
-            
+
+      - name: Get SonarCloud task ID
+        id: sonarcloud-task-id
+        run: |
+          # Extrair o taskId do log de saída da análise do SonarCloud
+          TASK_ID=$(grep -oP 'https://sonarcloud.io/api/ce/task\?id=\K[^&]+' sonar-scanner-output.log)
+          # Definir a saída para uso posterior na pipeline
+          echo "::set-output name=task-id::$TASK_ID"
+      
+      - name: Check SonarCloud Quality Gate status
+        id: sonarcloud-quality-gate-check
+        run: |
+          # Obter o taskId da saída do passo anterior
+          TASK_ID="${{ steps.sonarcloud-task-id.outputs.task-id }}"
+          # Fazer uma chamada à API do SonarCloud para verificar o status do Quality Gate usando o taskId
+          RESPONSE=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" "https://sonarcloud.io/api/qualitygates/project_status?analysisId=$TASK_ID")
+          # Extrair o status do Quality Gate da resposta JSON
+          QUALITY_GATE_STATUS=$(echo "$RESPONSE" | jq -r '.projectStatus.status')
+          # Definir a saída para uso posterior na pipeline
+          echo "::set-output name=quality-gate-status::$QUALITY_GATE_STATUS"
+      
+      - name: Check if SonarCloud Quality Gate failed
+        if: steps.sonarcloud-quality-gate-check.outputs.quality-gate-status == 'ERROR'
+        run: |
+          echo "Quality Gate do SonarCloud falhou. Interrompendo o fluxo."
+          exit 1
