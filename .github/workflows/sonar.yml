@@ -60,3 +60,19 @@ jobs:
           dotnet build src/TechLanches/TechLanches.sln --configuration Release
           dotnet test test/**/*.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+      - name: Get current analysisId
+        id: get-analysis-id
+        run: |
+          ANALYSIS_ID=$(curl -s "https://sonarcloud.io/api/ce/component?component=g12-4soat_techlanches-app" | jq -r '.current.analysisId')
+          echo "::set-output name=analysis-id::$ANALYSIS_ID"
+
+      - name: Check SonarCloud Quality Gate status
+        id: sonarcloud-quality-gate-check
+        run: |
+          ANALYSIS_ID=${{ steps.get-analysis-id.outputs.analysis-id }}
+          STATUS=$(curl -s "https://sonarcloud.io/api/qualitygates/project_status?analysisId=$ANALYSIS_ID" | jq -r '.projectStatus.status')
+          if [ "$STATUS" != "OK" ]; then
+            echo "SonarCloud Quality Gate check failed. Aborting workflow."
+            exit 1
+          fi
