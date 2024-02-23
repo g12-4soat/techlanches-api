@@ -57,7 +57,7 @@ namespace TechLanches.Domain.Aggregates
 
         public void DeletarProduto()
         {
-            Deletado = true;
+            Deletadoo = true;
         }
     }
 }
