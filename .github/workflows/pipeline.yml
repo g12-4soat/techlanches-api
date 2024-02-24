@@ -1,4 +1,4 @@
-name: Pipeline techlanches-app
+name: Pipeline techlanches api/worker
 
 on:
   push:  
@@ -46,9 +46,9 @@ jobs:
         working-directory: src/TechLanches
         run: |
           TAG=$(date +%Y%m%d%H%M%S)
-          docker build -f Dockerfile.API -t ${{secrets.DOCKER_USERNAME}}/techlanches-app:latest -t ${{secrets.DOCKER_USERNAME}}/techlanches-app:$TAG . --no-cache
-          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app:$TAG
-          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app:latest      
+          docker build -f Dockerfile.API -t ${{secrets.DOCKER_USERNAME}}/techlanches-api:latest -t ${{secrets.DOCKER_USERNAME}}/techlanches-api:$TAG . --no-cache
+          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-api:$TAG
+          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-api:latest      
 
   publish-worker-image-dh:
     needs: build-and-test
