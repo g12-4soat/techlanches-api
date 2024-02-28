@@ -43,7 +43,7 @@ namespace TechLanches.Adapter.FilaPedidos.Health
             }
         }
 
-        public async Task<HealthCheckResult> CheckHealthAsynccc(HealthCheckContext context, CancellationToken cancellationToken = default)
+        public async Task<HealthCheckResult> CheckHealthAsyncccc(HealthCheckContext context, CancellationToken cancellationToken = default)
         {
             try
             {
