@@ -1,7 +1,14 @@
 name: Pipeline techlanches-app
 
 on:
-  push:  
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
   workflow_dispatch:
   
 jobs:
