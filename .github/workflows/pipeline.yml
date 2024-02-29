@@ -91,5 +91,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: g12-4soat/techlanches-infra-k8s
           event-type: trigger-eks-deployment
-          inputs: 
-            branch: feature/terraform-eks
