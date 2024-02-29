@@ -86,8 +86,14 @@ jobs:
 
     steps:
       - name: Dispatch Sonar Analysis
-        uses: peter-evans/repository-dispatch@v1
+        uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GIT_TOKEN }}
           repository: g12-4soat/techlanches-infra-k8s
           event-type: trigger-eks-deployment
+          client-payload: |-
+            {
+              "repo": {
+                "branch": "feature/terraform-eks",
+              },
+            }
