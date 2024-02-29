@@ -89,5 +89,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository: owner/repo-sonar-analysis
+          repository: g12-4soat/techlanches-infra-k8s
           event-type: trigger-sonar-analysis
+          client_payload: '{"branch": "feature/terraform-eks"}'
