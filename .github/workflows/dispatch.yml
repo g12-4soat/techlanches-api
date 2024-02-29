@@ -1,6 +1,7 @@
-name: Chamar outra Action
+name: Dispatch
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
