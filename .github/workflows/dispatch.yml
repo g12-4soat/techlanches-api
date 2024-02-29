@@ -1,0 +1,21 @@
+name: Chamar outra Action
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Disparar evento para outro repositório
+        env:
+          TOKEN: ${{ secrets.GTH_TOKEN  }} # Substitua 'PAT' pelo nome da sua secret que contém o PAT
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.everest-preview+json" \
+            -H "Authorization: token $TOKEN" \
+            --data '{"event_type": "chamar-outra-action"' \
+            https://api.github.com/repos/g12-4soat/techlanches-infra-k8s
