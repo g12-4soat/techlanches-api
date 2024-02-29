@@ -78,7 +78,7 @@ jobs:
       publish-worker-image-dh
     ]
   
-    if: github.ref == 'refs/heads/release' || github.ref == 'refs/heads/main'
+  #  if: github.ref == 'refs/heads/release' || github.ref == 'refs/heads/main'
     environment:
       name: prod
     
@@ -87,4 +87,8 @@ jobs:
     steps:
       - name: Deploy AWS
         run: |
-          echo "Deploy AWS"
+          curl -XPOST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/g12-4soat/techlanches-infra-k8s/dispatches \
+            -d '{"event_type": "push"}'
