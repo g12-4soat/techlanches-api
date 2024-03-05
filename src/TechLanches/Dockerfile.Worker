@@ -3,6 +3,7 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
+COPY ["Adapter/Driver/TechLanches.Adapter.AWS.SecretsManager/TechLanches.Adapter.AWS.SecretsManager.csproj", "TechLanches.Adapter.AWS.SecretsManager/"]
 COPY ["Adapter/Driven/TechLanches.Adapter.SqlServer/TechLanches.Adapter.SqlServer.csproj", "TechLanches.Adapter.SqlServer/"]
 COPY ["Core/TechLanches.Application/TechLanches.Application.csproj", "TechLanches.Application/"]
 COPY ["Adapter/Driver/TechLanches.Adapter.FilaPedidos/TechLanches.Adapter.FilaPedidos.csproj", "Adapter/Driver/TechLanches.Adapter.FilaPedidos/"]

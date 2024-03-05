@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Builder;
 using Polly;
 using Polly.Extensions.Http;
 using System.Net.Http.Headers;
 using TechLanches.Adapter.API.Configuration;
-using TechLanches.Adapter.API.Middlewares;
+using TechLanches.Adapter.AWS.SecretsManager;
 using TechLanches.Adapter.RabbitMq.Options;
 using TechLanches.Adapter.SqlServer;
 using TechLanches.Application;
@@ -14,6 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
     .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true, true)
     .AddEnvironmentVariables();
+
+//AWS Secrets Manager
+builder.WebHost.ConfigureAppConfiguration(((_, configurationBuilder) =>
+{
+    configurationBuilder.AddAmazonSecretsManager("us-east-1", "database-credentials");
+}));
+
+builder.Services.Configure<TechLanchesDatabaseSecrets>(builder.Configuration);
 
 AppSettings.Configuration = builder.Configuration;
 
@@ -28,7 +35,7 @@ builder.Services.AddSwaggerConfiguration();
 builder.Services.AddDependencyInjectionConfiguration();
 
 //Setting DBContext
-builder.Services.AddDatabaseConfiguration(builder.Configuration);
+builder.Services.AddDatabaseConfiguration();
 
 //Setting mapster
 builder.Services.RegisterMaps();
