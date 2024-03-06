@@ -30,7 +30,7 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
             .Build();
 
 
-        services.AddDatabaseConfiguration(settingsConfig, ServiceLifetime.Singleton);
+        services.AddDatabaseConfiguration(ServiceLifetime.Singleton);
         services.Configure<WorkerOptions>(settingsConfig.GetSection("Worker"));
         services.Configure<RabbitOptions>(settingsConfig.GetSection("RabbitMQ"));
         services.Configure<ApplicationOptions>(settingsConfig.GetSection("ApiMercadoPago"));
