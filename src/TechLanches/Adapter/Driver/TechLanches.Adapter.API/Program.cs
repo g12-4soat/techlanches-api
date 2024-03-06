@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Polly;
 using Polly.Extensions.Http;
 using System.Net.Http.Headers;
@@ -31,8 +33,8 @@ AppSettings.Configuration = builder.Configuration;
 builder.Services.AddEndpointsApiExplorer();
 
 //Add cognito auth
-builder.Services.AddAuthenticationConfig(builder.Configuration);
-builder.Services.Configure<AuthenticationCognitoOptions>(builder.Configuration);
+builder.Services.Configure<AuthenticationCognitoOptions>(builder.Configuration.GetSection("Authentication"));
+builder.Services.AddAuthenticationConfig();
 
 //Setting Swagger
 builder.Services.AddSwaggerConfiguration();
@@ -70,15 +72,16 @@ app.AddCustomMiddlewares();
 
 app.UseDatabaseConfiguration();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 
 }
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.UseSwaggerConfiguration();
 

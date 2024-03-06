@@ -70,6 +70,7 @@ public static class PedidoEndpoints
            .RequireAuthorization();
     }
 
+
     private static async Task<IResult> BuscarPedidos(
         [FromServices] IPedidoController pedidoController)
     {

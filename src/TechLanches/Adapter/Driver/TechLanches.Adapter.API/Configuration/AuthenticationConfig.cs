@@ -7,7 +7,7 @@ namespace TechLanches.Adapter.API.Configuration
 {
     public static class AuthenticationConfig
     {
-        public static void AddAuthenticationConfig(this IServiceCollection services, IConfiguration configuration)
+        public static void AddAuthenticationConfig(this IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider();
             var opt = serviceProvider.GetRequiredService<IOptions<AuthenticationCognitoOptions>>();
@@ -26,9 +26,12 @@ namespace TechLanches.Adapter.API.Configuration
                     ValidIssuer = opt.Value.CognitoUri,
                     ValidateLifetime = true,
                     LifetimeValidator = (before, expires, token, param) => expires > DateTime.UtcNow,
-                    ValidateAudience = false
+                    ValidateAudience = false,
                 };
+                
             });
+
+            services.AddAuthorization();
         }
     }
 }
