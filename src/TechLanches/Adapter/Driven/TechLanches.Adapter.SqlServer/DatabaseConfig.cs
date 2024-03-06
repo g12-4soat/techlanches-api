@@ -26,7 +26,7 @@ namespace TechLanches.Adapter.SqlServer
             serviceLifetime);
         }
 
-        private static string GetConnectionString(TechLanchesDatabaseSecrets opt)
+        public static string GetConnectionString(TechLanchesDatabaseSecrets opt)
         {
             return $"Server={opt.Host},{opt.Port};Database={opt.Database};User Id={opt.Username};Password={opt.Password};TrustServerCertificate=True;";
         }
