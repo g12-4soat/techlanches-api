@@ -19,7 +19,8 @@ namespace TechLanches.Adapter.API.Endpoints
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.OK, type: typeof(List<ProdutoResponseDTO>), description: "Produtos encontrados com sucesso"))
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.BadRequest, type: typeof(ErrorResponseDTO), description: "Requisição inválida"))
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.NotFound, type: typeof(ErrorResponseDTO), description: "Produtos não encontrados"))
-               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"));
+               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"))
+               .RequireAuthorization();
 
             app.MapGet("api/produtos/{id}", BuscarProdutoPorId)
                .WithTags(EndpointTagConstantes.TAG_PRODUTO)
@@ -27,7 +28,8 @@ namespace TechLanches.Adapter.API.Endpoints
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.OK, type: typeof(ProdutoResponseDTO), description: "Produto encontrado com sucesso"))
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.BadRequest, type: typeof(ErrorResponseDTO), description: "Requisição inválida"))
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.NotFound, type: typeof(ErrorResponseDTO), description: "Produto não encontrado"))
-               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"));
+               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"))
+               .RequireAuthorization();
 
             app.MapGet("api/produtos/categoria/{categoriaId}", BuscarProdutosPorCategoria)
                .WithTags(EndpointTagConstantes.TAG_PRODUTO)
@@ -35,7 +37,8 @@ namespace TechLanches.Adapter.API.Endpoints
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.OK, type: typeof(List<ProdutoResponseDTO>), description: "Produtos encontrados com sucesso"))
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.BadRequest, type: typeof(ErrorResponseDTO), description: "Requisição inválida"))
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.NotFound, type: typeof(ErrorResponseDTO), description: "Produtos não encontrados"))
-               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"));
+               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"))
+               .RequireAuthorization();
 
             app.MapPost("api/produtos", CadastrarProduto)
                .WithTags(EndpointTagConstantes.TAG_PRODUTO)
@@ -43,7 +46,8 @@ namespace TechLanches.Adapter.API.Endpoints
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.Created, type: typeof(ProdutoResponseDTO), description: "Produto cadastrado com sucesso"))
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.BadRequest, type: typeof(ErrorResponseDTO), description: "Requisição inválida"))
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.NotFound, type: typeof(ErrorResponseDTO), description: "Produto não cadastrado"))
-               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"));
+               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"))
+               .RequireAuthorization();
 
             app.MapPut("api/produtos", AtualizarProduto)
                .WithTags(EndpointTagConstantes.TAG_PRODUTO)
@@ -51,7 +55,8 @@ namespace TechLanches.Adapter.API.Endpoints
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.OK, type: typeof(ProdutoResponseDTO), description: "Produto atualizado com sucesso"))
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.BadRequest, type: typeof(ErrorResponseDTO), description: "Requisição inválida"))
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.NotFound, type: typeof(ErrorResponseDTO), description: "Produto não atualizado"))
-               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"));
+               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"))
+               .RequireAuthorization();
 
             app.MapDelete("api/produtos/{id}", DeletarProduto)
                .WithTags(EndpointTagConstantes.TAG_PRODUTO)
@@ -59,7 +64,8 @@ namespace TechLanches.Adapter.API.Endpoints
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.OK, type: typeof(ProdutoResponseDTO), description: "Produto removido com sucesso"))
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.BadRequest, type: typeof(ErrorResponseDTO), description: "Requisição inválida"))
                .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.NotFound, type: typeof(ErrorResponseDTO), description: "Produto não removido"))
-               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"));
+               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"))
+               .RequireAuthorization();
 
             app.MapGet("api/produtos/categorias", BuscarCategorias)
               .WithTags(EndpointTagConstantes.TAG_PRODUTO)
@@ -67,7 +73,8 @@ namespace TechLanches.Adapter.API.Endpoints
               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.OK, type: typeof(List<CategoriaResponseDTO>), description: "Categorias encontradas"))
               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.BadRequest, type: typeof(ErrorResponseDTO), description: "Requisição inválida"))
               .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.NotFound, type: typeof(ErrorResponseDTO), description: "Categorias não encontradas"))
-              .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"));
+              .WithMetadata(new SwaggerResponseAttribute((int)HttpStatusCode.InternalServerError, type: typeof(ErrorResponseDTO), description: "Erro no servidor interno"))
+              .RequireAuthorization();
         }
 
         private static async Task<IResult> CadastrarProduto(

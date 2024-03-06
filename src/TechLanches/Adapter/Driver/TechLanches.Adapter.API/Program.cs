@@ -2,6 +2,7 @@ using Polly;
 using Polly.Extensions.Http;
 using System.Net.Http.Headers;
 using TechLanches.Adapter.API.Configuration;
+using TechLanches.Adapter.API.Options;
 using TechLanches.Adapter.AWS.SecretsManager;
 using TechLanches.Adapter.RabbitMq.Options;
 using TechLanches.Adapter.SqlServer;
@@ -22,11 +23,16 @@ builder.WebHost.ConfigureAppConfiguration(((_, configurationBuilder) =>
 
 builder.Services.Configure<TechLanchesDatabaseSecrets>(builder.Configuration);
 
+
 AppSettings.Configuration = builder.Configuration;
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+//Add cognito auth
+builder.Services.AddAuthenticationConfig(builder.Configuration);
+builder.Services.Configure<AuthenticationCognitoOptions>(builder.Configuration);
 
 //Setting Swagger
 builder.Services.AddSwaggerConfiguration();
@@ -63,6 +69,9 @@ var app = builder.Build();
 app.AddCustomMiddlewares();
 
 app.UseDatabaseConfiguration();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
