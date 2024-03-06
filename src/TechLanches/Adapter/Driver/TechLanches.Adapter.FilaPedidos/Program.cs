@@ -2,6 +2,7 @@ using Polly;
 using Polly.Extensions.Http;
 using System.Net.Http.Headers;
 using TechLanches.Adapter.ACL.Pagamento.QrCode.Provedores.MercadoPago;
+using TechLanches.Adapter.AWS.SecretsManager;
 using TechLanches.Adapter.FilaPedidos;
 using TechLanches.Adapter.FilaPedidos.Health;
 using TechLanches.Adapter.FilaPedidos.Options;
@@ -21,14 +22,16 @@ using TechLanches.Domain.Services;
 using TechLanches.Domain.Validations;
 
 var hostBuilder = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
+.ConfigureServices(services =>
     {
         var settingsConfig = new ConfigurationBuilder()
+            .AddAmazonSecretsManager("us-east-1", "database-credentials")
             .SetBasePath(Path.Combine(Directory.GetCurrentDirectory()))
             .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}.json", true, true)
             .AddEnvironmentVariables()
-            .Build();
-
+             .Build();
+            
+       services.Configure<TechLanchesDatabaseSecrets>(settingsConfig);
 
         services.AddDatabaseConfiguration(ServiceLifetime.Singleton);
         services.Configure<WorkerOptions>(settingsConfig.GetSection("Worker"));
