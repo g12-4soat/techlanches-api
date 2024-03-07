@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using TechLanches.Adapter.API.Options;
 
 namespace TechLanches.Adapter.API.Configuration
@@ -28,9 +29,23 @@ namespace TechLanches.Adapter.API.Configuration
                     LifetimeValidator = (before, expires, token, param) => expires > DateTime.UtcNow,
                     ValidateAudience = false,
                 };
-                
-            });
+                options.Events = new JwtBearerEvents
+                {
+                    OnChallenge = async context =>
+                    {
+                        context.HandleResponse(); 
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.ContentType = "application/json";
 
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(new
+                        {
+                            StatusCode = StatusCodes.Status401Unauthorized,
+                            Message = "Unauthorized"
+                        }));
+                    }
+                };
+            }
+            );
             services.AddAuthorization();
         }
     }
