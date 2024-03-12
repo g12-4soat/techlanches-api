@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using TechLanches.Adapter.AWS.SecretsManager;
 
 namespace TechLanches.Adapter.SqlServer
 {
@@ -9,16 +11,24 @@ namespace TechLanches.Adapter.SqlServer
     {
         public static void AddDatabaseConfiguration(
             this IServiceCollection services,
-            IConfiguration configuration,
             ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
         {
             if (services is null) throw new ArgumentNullException(nameof(services));
 
+            var serviceProvider = services.BuildServiceProvider();
+
+            var opt = serviceProvider.GetRequiredService<IOptions<TechLanchesDatabaseSecrets>>();            
+
             services.AddDbContext<TechLanchesDbContext>(config =>
             {
-                config.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                config.UseSqlServer(GetConnectionString(opt.Value));
             },
             serviceLifetime);
+        }
+
+        public static string GetConnectionString(TechLanchesDatabaseSecrets opt)
+        {
+            return $"Server={opt.Host},{opt.Port};Database={opt.Database};User Id={opt.Username};Password={opt.Password};TrustServerCertificate=True;";
         }
 
         public static void UseDatabaseConfiguration(this IApplicationBuilder app)

@@ -55,9 +55,9 @@ namespace TechLanches.Application.Controllers
             return _pedidoPresenter.ParaListaDto(pedidos);
         }
 
-        public async Task<PedidoResponseDTO> Cadastrar(string? cpf, List<ItemPedido> itensPedido)
+        public async Task<PedidoResponseDTO> Cadastrar(UserTokenDTO user, List<ItemPedido> itensPedido)
         {
-            var pedido = await PedidoUseCases.Cadastrar(cpf, itensPedido, _pedidoGateway, _clienteGateway);
+            var pedido = await PedidoUseCases.Cadastrar(user, itensPedido, _pedidoGateway, _clienteGateway);
             await _pedidoGateway.CommitAsync();
 
             return _pedidoPresenter.ParaDto(pedido);

@@ -1,4 +1,4 @@
-name: Pipeline techlanches-app
+name: Pipeline techlanches-api
 
 on:
   push:
@@ -117,9 +117,9 @@ jobs:
         working-directory: src/TechLanches
         run: |
           TAG=$(date +%Y%m%d%H%M%S)
-          docker build -f Dockerfile.API -t ${{secrets.DOCKER_USERNAME}}/techlanches-app:latest -t ${{secrets.DOCKER_USERNAME}}/techlanches-app:$TAG . --no-cache
-          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app:$TAG
-          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app:latest      
+          docker build -f Dockerfile.API -t ${{secrets.DOCKER_USERNAME}}/techlanches-api:latest -t ${{secrets.DOCKER_USERNAME}}/techlanches-api:$TAG . --no-cache
+          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-api:$TAG
+          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-api:latest      
 
   publish-worker-image-dh:
     needs: build-sonar
@@ -136,9 +136,9 @@ jobs:
         working-directory: src/TechLanches
         run: |
           TAG=$(date +%Y%m%d%H%M%S)
-          docker build -f Dockerfile.Worker -t ${{secrets.DOCKER_USERNAME}}/techlanches-app-worker:latest -t ${{secrets.DOCKER_USERNAME}}/techlanches-app-worker:$TAG . --no-cache
-          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app-worker:$TAG
-          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-app-worker:latest
+          docker build -f Dockerfile.Worker -t ${{secrets.DOCKER_USERNAME}}/techlanches-worker:latest -t ${{secrets.DOCKER_USERNAME}}/techlanches-worker:$TAG . --no-cache
+          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-worker:$TAG
+          docker push ${{secrets.DOCKER_USERNAME}}/techlanches-worker:latest
 ##############################################################
 
   deploy-prod:   
@@ -156,5 +156,13 @@ jobs:
 
     steps:
       - name: Deploy AWS
+        env:
+          TOKEN: ${{ secrets.GTH_TOKEN  }}
         run: |
-          echo "Deploy AWS"
+          curl -L \
+          -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: token $TOKEN" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/g12-4soat/techlanches-infra-k8s/actions/workflows/deployments.yml/dispatches \
+          -d '{"ref":"main"}'

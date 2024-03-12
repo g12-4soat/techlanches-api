@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\..\Core\TechLanches.Application\TechLanches.Application.csproj" />
     <ProjectReference Include="..\..\..\Core\TechLanches.Core\TechLanches.Core.csproj" />
     <ProjectReference Include="..\..\..\Core\TechLanches.Domain\TechLanches.Domain.csproj" />
+    <ProjectReference Include="..\TechLanches.Adapter.AWS.SecretsManager\TechLanches.Adapter.AWS.SecretsManager.csproj" />
   </ItemGroup>
 
   <ItemGroup>

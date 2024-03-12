@@ -5,11 +5,6 @@
     /// </summary>
     public class PedidoRequestDTO
     {
-        /// <summary>
-        /// CPF do cliente
-        /// </summary>
-        /// <example>510.138.370-88</example>
-        public string? Cpf { get; set; }
         public List<ItemPedidoRequestDTO> ItensPedido { get; set; } 
     }
 

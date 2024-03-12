@@ -1,9 +1,11 @@
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Polly;
 using Polly.Extensions.Http;
 using System.Net.Http.Headers;
 using TechLanches.Adapter.API.Configuration;
-using TechLanches.Adapter.API.Middlewares;
+using TechLanches.Adapter.API.Options;
+using TechLanches.Adapter.AWS.SecretsManager;
 using TechLanches.Adapter.RabbitMq.Options;
 using TechLanches.Adapter.SqlServer;
 using TechLanches.Application;
@@ -15,11 +17,24 @@ builder.Configuration
     .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true, true)
     .AddEnvironmentVariables();
 
+//AWS Secrets Manager
+builder.WebHost.ConfigureAppConfiguration(((_, configurationBuilder) =>
+{
+    configurationBuilder.AddAmazonSecretsManager("us-east-1", "database-credentials");
+}));
+
+builder.Services.Configure<TechLanchesDatabaseSecrets>(builder.Configuration);
+
+
 AppSettings.Configuration = builder.Configuration;
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+//Add cognito auth
+builder.Services.Configure<AuthenticationCognitoOptions>(builder.Configuration.GetSection("Authentication"));
+builder.Services.AddAuthenticationConfig();
 
 //Setting Swagger
 builder.Services.AddSwaggerConfiguration();
@@ -28,7 +43,7 @@ builder.Services.AddSwaggerConfiguration();
 builder.Services.AddDependencyInjectionConfiguration();
 
 //Setting DBContext
-builder.Services.AddDatabaseConfiguration(builder.Configuration);
+builder.Services.AddDatabaseConfiguration();
 
 //Setting mapster
 builder.Services.RegisterMaps();
@@ -63,6 +78,10 @@ if (app.Environment.IsDevelopment())
 
 }
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.UseSwaggerConfiguration();
 

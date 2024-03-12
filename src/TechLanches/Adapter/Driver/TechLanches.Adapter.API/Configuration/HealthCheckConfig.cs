@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Options;
 using TechLanches.Adapter.API.Health;
+using TechLanches.Adapter.AWS.SecretsManager;
+using TechLanches.Adapter.SqlServer;
 
 namespace TechLanches.Adapter.API.Configuration
 {
@@ -7,8 +11,12 @@ namespace TechLanches.Adapter.API.Configuration
     {
         public static void AddHealthCheckConfig(this IServiceCollection services, IConfiguration configuration)
         {
+            var serviceProvider = services.BuildServiceProvider();
+
+            var opt = serviceProvider.GetRequiredService<IOptions<TechLanchesDatabaseSecrets>>();
+
             services.AddHealthChecks()
-                .AddSqlServer(connectionString: configuration.GetConnectionString("DefaultConnection"), name: "Banco de dados Tech Lanches")
+                .AddSqlServer(connectionString: DatabaseConfig.GetConnectionString(opt.Value), name: "Banco de dados Tech Lanches")
                 .AddCheck<RabbitMQHealthCheck>("rabbit_hc");
         }
 
