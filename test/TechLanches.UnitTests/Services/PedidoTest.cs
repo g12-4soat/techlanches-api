@@ -143,6 +143,10 @@ namespace TechLanches.UnitTests.Services
         {
             //Arrange
             var cpf = new Cpf("046.047.173-20");
+            var userTokenDTO = new UserTokenDTO
+            {
+                Username = "046.047.173-20"
+            };
             var itensPedidos = _pedidoFixture.GerarItensPedidoValidos();
             var pedidoReturn = new Pedido(1, itensPedidos);
             var pedidoRepository = Substitute.For<IPedidoRepository>();
@@ -154,7 +158,7 @@ namespace TechLanches.UnitTests.Services
             pedidoRepository.Cadastrar(pedidoReturn).Returns(pedidoReturn);
 
             //Act 
-            var pedido = await pedidoController.Cadastrar(cpf.Numero, itensPedidos);
+            var pedido = await pedidoController.Cadastrar(userTokenDTO, itensPedidos);
 
             //Assert
             await pedidoRepository.Received().Cadastrar(pedidoReturn);

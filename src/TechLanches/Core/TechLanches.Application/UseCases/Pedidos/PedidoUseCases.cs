@@ -1,4 +1,5 @@
-﻿using TechLanches.Application.Gateways.Interfaces;
+﻿using TechLanches.Application.DTOs;
+using TechLanches.Application.Gateways.Interfaces;
 using TechLanches.Application.UseCases.Clientes;
 using TechLanches.Core;
 using TechLanches.Domain.Aggregates;
@@ -10,9 +11,9 @@ namespace TechLanches.Application.UseCases.Pedidos
 {
     public class PedidoUseCases
     {
-        public static async Task<Pedido> Cadastrar(string? cpf, List<ItemPedido> itensPedido, IPedidoGateway pedidoGateway, IClienteGateway clienteGateway)
+        public static async Task<Pedido> Cadastrar(UserTokenDTO user, List<ItemPedido> itensPedido, IPedidoGateway pedidoGateway, IClienteGateway clienteGateway)
         {
-            var cliente = await ClienteUseCases.IdentificarCliente(cpf, clienteGateway);
+            var cliente = await ClienteUseCases.IdentificarCliente(user, clienteGateway);
             var pedido = new Pedido(cliente?.Id, itensPedido);
 
             pedido = await pedidoGateway.Cadastrar(pedido);

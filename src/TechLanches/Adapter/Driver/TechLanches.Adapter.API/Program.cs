@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Polly;
 using Polly.Extensions.Http;
 using System.Net.Http.Headers;
 using TechLanches.Adapter.API.Configuration;
+using TechLanches.Adapter.API.Options;
 using TechLanches.Adapter.AWS.SecretsManager;
 using TechLanches.Adapter.RabbitMq.Options;
 using TechLanches.Adapter.SqlServer;
@@ -22,11 +25,16 @@ builder.WebHost.ConfigureAppConfiguration(((_, configurationBuilder) =>
 
 builder.Services.Configure<TechLanchesDatabaseSecrets>(builder.Configuration);
 
+
 AppSettings.Configuration = builder.Configuration;
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+//Add cognito auth
+builder.Services.Configure<AuthenticationCognitoOptions>(builder.Configuration.GetSection("Authentication"));
+builder.Services.AddAuthenticationConfig();
 
 //Setting Swagger
 builder.Services.AddSwaggerConfiguration();
@@ -70,6 +78,10 @@ if (app.Environment.IsDevelopment())
 
 }
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.UseSwaggerConfiguration();
 
