@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using TechLanches.Adapter.API.Options;
+using TechLanches.Adapter.AWS.SecretsManager;
 
 namespace TechLanches.Adapter.API.Configuration
 {
@@ -11,7 +12,7 @@ namespace TechLanches.Adapter.API.Configuration
         public static void AddAuthenticationConfig(this IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider();
-            var opt = serviceProvider.GetRequiredService<IOptions<AuthenticationCognitoOptions>>();
+            var opt = serviceProvider.GetRequiredService<IOptions<TechLanchesCognitoSecrets>>();
 
             services.AddAuthentication(options =>
             {

@@ -21,9 +21,11 @@ builder.Configuration
 builder.WebHost.ConfigureAppConfiguration(((_, configurationBuilder) =>
 {
     configurationBuilder.AddAmazonSecretsManager("us-east-1", "database-credentials");
+    configurationBuilder.AddAmazonSecretsManager("us-east-1", "lambda_auth_credentials");
 }));
 
 builder.Services.Configure<TechLanchesDatabaseSecrets>(builder.Configuration);
+builder.Services.Configure<TechLanchesCognitoSecrets>(builder.Configuration);
 
 
 AppSettings.Configuration = builder.Configuration;
