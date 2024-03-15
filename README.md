@@ -197,21 +197,10 @@ Após a instalação do k6, apartir da raiz do repositório, entre no diretório
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [k6](https://k6.io/docs/get-started/installation/)
 
-## Build & Tests
-| CI/CD | Status |
+## Pipeline Status
+| Pipeline | Status |
 | --- | --- | 
-| Build & Unit Tests | [![.NET Build and Test](https://github.com/g12-4soat/tech-lanches/actions/workflows/build-tests.yml/badge.svg)](https://github.com/g12-4soat/tech-lanches/actions/workflows/build-tests.yml)
-| TechLanches API | [![Build API Docker Image](https://github.com/g12-4soat/tech-lanches/actions/workflows/dockerfile-api-build-ci.yml/badge.svg)](https://github.com/g12-4soat/tech-lanches/actions/workflows/dockerfile-api-build-ci.yml)
-| TechLanches Worker FilaPedidos | [![Build Worker Docker Image](https://github.com/g12-4soat/tech-lanches/actions/workflows/dockerfile-worker-build-ci.yml/badge.svg)](https://github.com/g12-4soat/tech-lanches/actions/workflows/dockerfile-worker-build-ci.yml)
-| Docker Compose | [![Build Docker Compose](https://github.com/g12-4soat/tech-lanches/actions/workflows/docker-compose-build-ci.yml/badge.svg)](https://github.com/g12-4soat/tech-lanches/actions/workflows/docker-compose-build-ci.yml)
-
-## Deployment
-| CI/CD | Status |
-| --- | --- | 
-| API Docker Publish Develop | [![API Docker Publish Develop](https://github.com/g12-4soat/tech-lanches/actions/workflows/docker-publish-api-develop.yml/badge.svg)](https://github.com/g12-4soat/tech-lanches/actions/workflows/docker-publish-api-develop.yml) | 
-| Worker Docker Publish Develop | [![Worker Docker Publish Develop](https://github.com/g12-4soat/tech-lanches/actions/workflows/docker-publish-worker-develop.yml/badge.svg)](https://github.com/g12-4soat/tech-lanches/actions/workflows/docker-publish-worker-develop.yml) | 
-| API Docker Publish | [![API Docker Publish](https://github.com/g12-4soat/tech-lanches/actions/workflows/docker-publish-api.yml/badge.svg)](https://github.com/g12-4soat/tech-lanches/actions/workflows/docker-publish-api.yml) | 
-| Worker Docker Publish | [![Worker Docker Publish](https://github.com/g12-4soat/tech-lanches/actions/workflows/docker-publish-worker.yml/badge.svg)](https://github.com/g12-4soat/tech-lanches/actions/workflows/docker-publish-worker.yml) | 
+| Pipeline techlanches-api | [![TechLanches API](https://github.com/g12-4soat/techlanches-api/actions/workflows/pipeline.yml/badge.svg)](https://github.com/g12-4soat/techlanches-api/actions/workflows/pipeline.yml)
 
 ---
 
