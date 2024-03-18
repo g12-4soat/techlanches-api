@@ -132,8 +132,8 @@ Para acessar o Ngrok e visualizar as requisições de webhook em tempo real, bas
 
 ### Postman 
 Para importar as collections do postman, basta acessar os links a seguir:
-- Collection: https://github.com/g12-4soat/tech-lanches/blob/main/docs/Fase2/TechLanches.postman_collection.json
-- Local Environment: https://github.com/g12-4soat/tech-lanches/blob/main/docs/Fase2/TechLanches-Local.postman_environment.json
+- Collection: https://github.com/g12-4soat/techlanches-api/blob/main/docs/fase3/TechLanches.postman_collection.json
+- Local Environment: https://github.com/g12-4soat/techlanches-api/blob/main/docs/fase3/TechLanches-Local.postman_environment.json
 
 > Por padrão, a API está configurada para ser executada na porta 5050, como definido no [docker-compose.yml](https://github.com/g12-4soat/tech-lanches/blob/main/docker-compose.yml). Caso tenha problemas de inicialização, verifique se a porta já está sendo utilizada.
   ---
